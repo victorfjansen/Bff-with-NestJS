@@ -5,7 +5,5 @@ import { PokemonModule } from './modules/pokemon/pokemon.module';
 
 @Module({
   imports: [PokemonModule, CovidModule],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}

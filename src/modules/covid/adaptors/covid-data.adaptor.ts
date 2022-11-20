@@ -1,15 +1,15 @@
-import { Injectable } from '@nestjs/common';
-
 import {
   CovidDataCountryViewModel,
   CovidDataUfViewModel,
   IndividualDataUfDto,
 } from '../models';
+import { ResultViewModel } from './../../../shared/models/interfaces/result-view.model';
 import { DataPerCountryDto } from './../models/dtos/data-per-country.dto';
 
-@Injectable()
 export class CovidAdaptor {
-  static covidList(covidItem: CovidDataUfViewModel[]): IndividualDataUfDto[] {
+  static covidList(
+    covidItem: CovidDataUfViewModel[],
+  ): ResultViewModel<IndividualDataUfDto[]> {
     const newArr = [];
     covidItem.forEach((item) => {
       newArr.push({
@@ -21,23 +21,36 @@ export class CovidAdaptor {
         datetime: item?.datetime,
       });
     });
-    return newArr;
+
+    return {
+      data: newArr,
+      error: null,
+      message: 'Dados encontrados com sucesso',
+      status: 200,
+    };
   }
 
-  static individualCovidData(data: CovidDataUfViewModel): IndividualDataUfDto {
+  static individualCovidData(
+    data: CovidDataUfViewModel,
+  ): ResultViewModel<IndividualDataUfDto> {
     return {
-      uf: data?.uf,
-      state: data?.state,
-      cases: data?.cases,
-      deaths: data?.deaths,
-      suspects: data?.suspects,
-      datetime: data?.datetime,
+      data: {
+        uf: data?.uf,
+        state: data?.state,
+        cases: data?.cases,
+        deaths: data?.deaths,
+        suspects: data?.suspects,
+        datetime: data?.datetime,
+      },
+      error: null,
+      message: 'Dados encontrados com sucesso',
+      status: 200,
     };
   }
 
   static getDataPerCountry(
     data: CovidDataCountryViewModel[],
-  ): DataPerCountryDto[] {
+  ): ResultViewModel<DataPerCountryDto[]> {
     const newArr: DataPerCountryDto[] = [];
     data.forEach((item) => {
       newArr.push({
@@ -48,6 +61,12 @@ export class CovidAdaptor {
         updated_at: item?.updated_at,
       });
     });
-    return newArr;
+
+    return {
+      data: newArr,
+      error: null,
+      message: 'Dados encontrados com sucesso',
+      status: 200,
+    };
   }
 }

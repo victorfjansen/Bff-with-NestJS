@@ -1,3 +1,4 @@
+import { ResultViewModel } from './../../../shared/models/interfaces/result-view.model';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
@@ -12,19 +13,21 @@ export class CovidService extends BaseService {
     super('https://covid19-brazil-api.now.sh/api/report/v1');
   }
 
-  getBrazilCovidData(): Observable<IndividualDataUfDto[]> {
+  getBrazilCovidData(): Observable<ResultViewModel<IndividualDataUfDto[]>> {
     return this.httpService
       .get(this.getApiUrl())
       .pipe(map((data) => CovidAdaptor.covidList(data?.data?.data)));
   }
 
-  getDataPerState(uf: string): Observable<IndividualDataUfDto> {
+  getDataPerState(
+    uf: string,
+  ): Observable<ResultViewModel<IndividualDataUfDto>> {
     return this.httpService
       .get(this.getApiUrl(`brazil/uf/${uf}`))
       .pipe(map((data) => CovidAdaptor.individualCovidData(data?.data)));
   }
 
-  getDataPerCountry(): Observable<DataPerCountryDto[]> {
+  getDataPerCountry(): Observable<ResultViewModel<DataPerCountryDto[]>> {
     return this.httpService
       .get(this.getApiUrl('countries'))
       .pipe(map((data) => CovidAdaptor.getDataPerCountry(data?.data?.data)));

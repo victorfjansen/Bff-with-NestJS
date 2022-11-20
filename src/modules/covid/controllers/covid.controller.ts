@@ -1,8 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { catchError, Observable } from 'rxjs';
+import { catchError } from 'rxjs';
 import { errorResponseHelper } from 'src/shared/helpers/error-response.helper';
-import { DataPerCountryDto, IndividualDataUfDto } from '../models';
 
 import { CovidService } from './../services/covid.service';
 
@@ -12,19 +11,17 @@ export class CovidController {
   constructor(private covidService: CovidService) {}
 
   @Get()
-  getBrazilCovidData(): Observable<IndividualDataUfDto[]> {
+  getBrazilCovidData() {
     return this.covidService.getBrazilCovidData();
   }
 
   @Get('/:state')
-  getCovidDataPerState(
-    @Param('state') state: string,
-  ): Observable<IndividualDataUfDto> {
+  getCovidDataPerState(@Param('state') state: string) {
     return this.covidService.getDataPerState(state);
   }
 
   @Get('data/countries')
-  getCountriesData(): Observable<DataPerCountryDto[]> {
+  getCountriesData() {
     return this.covidService
       .getDataPerCountry()
       .pipe(catchError(errorResponseHelper));
