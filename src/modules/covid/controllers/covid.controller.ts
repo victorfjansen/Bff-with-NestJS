@@ -12,12 +12,16 @@ export class CovidController {
 
   @Get()
   getBrazilCovidData() {
-    return this.covidService.getBrazilCovidData();
+    return this.covidService
+      .getBrazilCovidData()
+      .pipe(catchError(errorResponseHelper));
   }
 
   @Get('/:state')
   getCovidDataPerState(@Param('state') state: string) {
-    return this.covidService.getDataPerState(state);
+    return this.covidService
+      .getDataPerState(state)
+      .pipe(catchError(errorResponseHelper));
   }
 
   @Get('data/countries')
